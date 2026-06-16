@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-const API_URL = 'https://studyplan-2oec.onrender.com';
+const API_URL = 'https://srv-d8oqb93tqb8s73cau8c0.onrender.com';
 
 const ProtectedRoute = ({ isAuthenticated, children }) => {
   if (!isAuthenticated) return <Navigate to="/login" replace />;
