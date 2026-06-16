@@ -4,19 +4,14 @@ from flask_cors import CORS
 import sqlite3
 import time
 
-app = Flask(__name__)
+# Указываем Flask, где искать собранный React-сайт
+app = Flask(__name__, static_folder='../dist', static_url_path='')
+CORS(app)
 
-# Главная страница теперь будет отдавать твой сайт (index.html)
-@app.route('/')
-def serve_site():
-    return send_from_directory(app.static_folder, 'index.html')
-
-# На всякий случай оставляем проверку статуса на другом адресе
+# Проверка статуса сервера
 @app.route('/status')
 def status():
     return {"status": "ok"}
-
-
 
 DB_NAME = "studyplan.db"
 
@@ -48,11 +43,11 @@ def init_db():
         )
     ''')
     
-    # Добавим дефолтного пользователя nur_nur@888, если базы еще нет
+    # Дефолтный пользователь nur_nur@888
     try:
         cursor.execute("INSERT INTO users (login, password) VALUES (?, ?)", ('nur_nur@888', '123'))
     except sqlite3.IntegrityError:
-        pass  # Уже есть
+        pass  
         
     conn.commit()
     conn.close()
@@ -134,7 +129,7 @@ def add_task():
     conn.commit()
     conn.close()
     
-    return jsonify(({'id': new_id}), 21)
+    return jsonify({'id': new_id}), 201
 
 @app.route('/api/tasks/<int:task_id>/toggle', methods=['POST'])
 def toggle_task(task_id):
@@ -154,9 +149,10 @@ def delete_task(task_id):
     conn.close()
     return jsonify({'message': 'Задача удалена'}), 200
 
+# Главная страница — ОДИН раз, в самом конце файла
 @app.route('/')
 def serve_site():
-    return send_from_directory('../dist', 'index.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
