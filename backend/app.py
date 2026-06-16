@@ -4,6 +4,7 @@ from flask_cors import CORS
 import sqlite3
 import time
 
+app = Flask(__name__)
 
 # Главная страница теперь будет отдавать твой сайт (index.html)
 @app.route('/')
