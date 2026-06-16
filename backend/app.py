@@ -4,8 +4,21 @@ from flask_cors import CORS
 import sqlite3
 import time
 
-app = Flask(__name__)
-CORS(app)  # Разрешаем React общаться с Flask
+# Указываем Flask, что наш сайт лежит в папке выше
+app = Flask(__name__, static_folder='../dist', static_url_path='')
+CORS(app)
+
+# Главная страница теперь будет отдавать твой сайт (index.html)
+@app.route('/')
+def serve_site():
+    return send_from_directory(app.static_folder, 'index.html')
+
+# На всякий случай оставляем проверку статуса на другом адресе
+@app.route('/status')
+def status():
+    return {"status": "ok"}
+
+
 
 DB_NAME = "studyplan.db"
 
