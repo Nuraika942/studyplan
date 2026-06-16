@@ -4,9 +4,6 @@ from flask_cors import CORS
 import sqlite3
 import time
 
-# Указываем Flask, что наш сайт лежит в папке выше
-app = Flask(__name__, static_folder='../dist', static_url_path='')
-CORS(app)
 
 # Главная страница теперь будет отдавать твой сайт (index.html)
 @app.route('/')
