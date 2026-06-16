@@ -144,5 +144,8 @@ def delete_task(task_id):
     return jsonify({'message': 'Задача удалена'}), 200
 
 if __name__ == '__main__':
+    @app.route('/')
+def home():
+    return {"status": "ok", "message": "Backend is running!"}, 200
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
