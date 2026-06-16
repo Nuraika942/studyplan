@@ -4,14 +4,9 @@ from flask_cors import CORS
 import sqlite3
 import time
 
-# Указываем Flask, где искать собранный React-сайт
+# Указываем Flask, где искать собранный React-сайт (папка dist на уровень выше)
 app = Flask(__name__, static_folder='../dist', static_url_path='')
 CORS(app)
-
-# Проверка статуса сервера
-@app.route('/status')
-def status():
-    return {"status": "ok"}
 
 DB_NAME = "studyplan.db"
 
@@ -43,17 +38,23 @@ def init_db():
         )
     ''')
     
-    # Дефолтный пользователь nur_nur@888
+    # Добавим дефолтного пользователя nur_nur@888, если базы еще нет
     try:
         cursor.execute("INSERT INTO users (login, password) VALUES (?, ?)", ('nur_nur@888', '123'))
     except sqlite3.IntegrityError:
-        pass  
+        pass  # Уже есть
         
     conn.commit()
     conn.close()
 
 # Инициализируем БД при старте
 init_db()
+
+# --- МАРШРУТЫ ДЛЯ API (БЭКЕНД) ---
+
+@app.route('/status')
+def status():
+    return {"status": "ok"}
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -149,9 +150,14 @@ def delete_task(task_id):
     conn.close()
     return jsonify({'message': 'Задача удалена'}), 200
 
-# Главная страница — ОДИН раз, в самом конце файла
-@app.route('/')
-def serve_site():
+# --- ОТДАЧА ФРОНТЕНДА (САЙТА) ---
+
+# Этот роут ловит любые адреса (кроме /api/) и открывает твой React-сайт
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_site(path):
+    if path.startswith("api/"):
+        return jsonify({"error": "Not Found"}), 404
     return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
