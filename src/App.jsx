@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-const API_URL = 'http://127.0.0.1:5000/api';
+const API_URL = 'http://localhost:5000';
 
 const ProtectedRoute = ({ isAuthenticated, children }) => {
   if (!isAuthenticated) return <Navigate to="/login" replace />;
