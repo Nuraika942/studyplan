@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
@@ -143,5 +144,5 @@ def delete_task(task_id):
     return jsonify({'message': 'Задача удалена'}), 200
 
 if __name__ == '__main__':
-       port = int(.environ.get("PORT", 5000))
-       app.run(host='0.0.0.0', port=port, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
