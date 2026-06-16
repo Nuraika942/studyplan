@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sqlite3
 import time
@@ -144,8 +144,8 @@ def delete_task(task_id):
     return jsonify({'message': 'Задача удалена'}), 200
 
 @app.route('/')
-def home():
-    return {"status": "ok"}
+def serve_site():
+    return send_from_directory('../dist', 'index.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
