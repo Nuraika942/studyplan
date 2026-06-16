@@ -6,7 +6,7 @@ import time
 
 # Указываем Flask, где искать собранный React-сайт (папка dist на уровень выше)
 app = Flask(__name__, static_folder='../dist', static_url_path='')
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 DB_NAME = "studyplan.db"
 
