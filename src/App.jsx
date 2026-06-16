@@ -1,17 +1,15 @@
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 function App() {
-  const [msg, setMsg] = useState('Проверка...');
-
-  useEffect(() => {
-    fetch('https://studyplan-2oec.onrender.com/api/test')
-      .then(res => res.json())
-      .then(data => setMsg(data.status))
-      .catch(() => setMsg('Ошибка соединения!'));
-  }, []);
-
   return (
-    <div style={{ padding: '50px', textAlign: 'center' }}>
-      <h1>{msg}</h1>
-    </div>
+    <Router>
+      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+        <h1>Система восстановлена</h1>
+        <p>Проект запущен. Теперь можно добавлять обратно логику страниц.</p>
+      </div>
+    </Router>
   );
 }
+
 export default App;
